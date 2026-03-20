@@ -26,3 +26,4 @@ jobs:
           EMAIL_PASSWORD:   ${{ secrets.EMAIL_PASSWORD }}
           EMAIL_RECIPIENTS: ${{ secrets.EMAIL_RECIPIENTS }}
           APIFY_API_TOKEN:  ${{ secrets.APIFY_API_TOKEN }}
+          
