@@ -192,7 +192,7 @@ def build_pdf(jobs: list[dict], output_path: str):
     story += [hdr, Spacer(1, 0.4*cm)]
 
     story.append(Paragraph(
-        f"Top {len(jobs)} EY Matches for today — scored 6.0+",
+        f"Top {len(jobs)} EY Matches for today",
         S("H2", fontName="Helvetica-Bold", fontSize=13, textColor=EY_DARK, spaceAfter=6)
     ))
     story.append(HRFlowable(width="100%", thickness=1, color=EY_YELLOW, spaceAfter=6))
@@ -330,17 +330,12 @@ def main():
                 j["score"] = score_job(j)
                 all_jobs.append(j)
 
-    # 2. Filter & sort
-    matched = sorted(
-        [j for j in all_jobs if j["score"] >= 6.0],
-        key=lambda x: x["score"],
-        reverse=True
-    )
+    # 2. Sort all jobs by score (no filter)
+    matched = sorted(all_jobs, key=lambda x: x["score"], reverse=True)
     print(f"\n  Total unique jobs scraped : {len(all_jobs)}")
-    print(f"  Jobs scoring 6.0+         : {len(matched)}")
 
     if not matched:
-        print("  ⚠  No matches today — email not sent.")
+        print("  ⚠  No jobs found today — email not sent.")
         return
 
     # 3. Build PDF
