@@ -1,0 +1,28 @@
+name: EY Daily Job Alert
+
+on:
+  schedule:
+    - cron: '0 12 * * *'   # 12:00 UTC = 7:00 AM EST / 5:00 AM PST, daily
+  workflow_dispatch:         # allows manual "Run workflow" trigger for testing
+
+jobs:
+  alert:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests reportlab
+
+      - name: Run job alert
+        run: python job_alert.py
+        env:
+          EMAIL_SENDER:     ${{ secrets.EMAIL_SENDER }}
+          EMAIL_PASSWORD:   ${{ secrets.EMAIL_PASSWORD }}
+          EMAIL_RECIPIENTS: ${{ secrets.EMAIL_RECIPIENTS }}
+          APIFY_API_TOKEN:  ${{ secrets.APIFY_API_TOKEN }}
